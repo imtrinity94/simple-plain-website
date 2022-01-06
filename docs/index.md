@@ -1,0 +1,106 @@
+<!DOCTYPE html>  
+<html>
+<head>
+    <title>Embed Swagger UI into Existing .NET APIs</title>
+
+    <!-- webfonts -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en" />
+
+
+    <style>
+   body{
+   font-family: 'Open Sans',sans-serif;
+   
+}
+        h1 {
+            font-size: 28px;
+            font-family: 'Open Sans',sans-serif;
+            font-weight:600;
+        }
+
+        h2 {
+            color: #0071b8;
+            font-size: 28px;
+        }
+        h3 {
+            font-weight:400;
+            font-size:22px;
+        }
+        img {
+  display: block;
+  margin:   auto;
+  padding: 15px 0 15px 0 !important;
+  
+}
+    </style>
+
+</head>
+<body>
+    <div style="margin: auto; width:60%">
+                <h1>Embed Swagger UI into Existing .NET APIs</h1>
+                <h3>Use Swashbuckle to automatically generate a valid Swagger/OpenAPI 2.0 Specification and integrate Swagger UI into your existing .NET APIs.</h3>
+         <img src="images/screen6.png"  style="width:600px"/>
+<p><a href="https://github.com/domaindrivendev/Swashbuckle" target="_blank">Swashbuckle</a> is an open source library that allows you to embed <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a> into your existing .NET APIs. Available as a NuGet Package, the Swashbuckle installation embeds <a href="https://github.com/swagger-api/swagger-ui" target="_blank">swagger-ui</a> directly into your project. It also includes a configuration class to customize your Swagger UI settings.</p>
+
+<p>Swashbuckle will automatically generate a valid <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md" target="_blank">Swagger/OpenAPI 2.0 Specification</a> based on your existing routes, controllers, models, and custom settings. Swagger UI uses this OpenAPI Specification to generate your API's documentation, available from your API's root URL (e.g., http://localhost:50200/swagger/ui/index). </p>
+
+<p>This tutorial applies only to existing .NET APIs that are hosted in IIS. It will guide you through the process of installing Swashbuckle and enabling XML comments for your Swagger UI documentation. For a complete list of features and installation options for self-hosted APIs, refer to the <a href="https://github.com/domaindrivendev/Swashbuckle" target="_blank">Swashbuckle README</a> on GitHub.com. </p>
+<!--<p>If you're getting ready to start a new project, you may want to consider using <a href="https://swagger.io/tools/swagger-editor/" target="_blank">Swagger Editor</a> to design, describe, and document your API.</p>-->
+
+
+
+        <h2>Step 1: Install Swashbuckle from NuGet.</h2>
+                <p>To install the latest stable version of Swashbuckle from the NuGet Package Console, type the following:</p>
+    <code>Install-Package Swashbuckle</code>
+    <p>To install Swashbuckle from the NuGet Package Manager:</p>
+    <ol style="list-style-type:lower-alpha;"><li>Open your existing .NET API in Visual Studio. From the Solution Explorer, right click your Project name and select <strong>Manage NuGet Packages...</strong>
+<br /><img src="images/screen1a.png" style="width:600px" /></li>
+        <li>From the NuGet Package manager, click <strong>Browse</strong>, and search for <em>swashbuckle</em>. Select the latest stable version, then click Install. Your installation progress will be displayed in the Output Window. Visual Studio may prompt you with an installation summary. Click OK to continue.<br />
+                    <img src="images/screen2a.png"  style="width:600px"/>
+        </li>
+                </ol>
+       <p>When the installation is complete, you can immediately browse your Swagger UI documentation.</p>
+
+        <h2>Step 2: Browse your new Swagger UI documentation.</h2>
+    To browse your Swagger UI documentation:
+    <ol style="list-style-type:lower-alpha;">
+        <li>Build and run your API.</li>
+        <li>From your browser, navigate to http://[<em>localhost:50200</em>]<strong>/swagger/ui/index</strong>.
+ </li>
+        </ol> 
+                On your documentation home page, all of your endpoints should be listed and grouped by each of your controller(s). Every time you re-build your API, your Swagger UI documentation will automatically reflect any changes.<br />
+        <img src="images/screen6.png"  style="width:600px"/>
+    <h2>Step 3: Add XML comments.</h2>
+    To include XML comments in your Swagger UI documentation, you'll need to enable your API&#39;s XML Output settings and update the Swashbuckle configuration class.<br />
+    <ol style="list-style-type:lower-alpha;">
+         <li>Right click your API Project from the Solution Explorer and select Properties. <br />
+        <img src="images/screen9.png"  style="width:600px"/>
+        </li>
+        <li>From the Properties window, click <strong>Build</strong>, and locate the Output section. Make sure that <strong>XML documentation file</strong> is checked, and copy your XML file path to a text file for later use.<br />
+        <img src="images/screen10.png"  style="width:600px"/>
+        </li>
+        <li>Next, you&#39;ll need to update the Swashbuckle configuration settings and create a method to read your XML file. Open SwaggerConfig.cs from your App_Start folder and uncomment the following line:<br /><br />
+        <code>c.IncludeXmlComments(GetXmlCommentsPath());</code><br />
+        <img src="images/screen8.png"  style="width:600px"/></li>
+       
+        <li>Paste the following code as a new method in SwaggerConfig.cs, appending the .BaseDirectory with your XML file path (e.g., @&quot;bin\PetStore.xml&quot;) :<br /><br />
+            <code>private static string GetXmlCommentsPath()<br />
+        {<br />
+          &nbsp;&nbsp;&nbsp;  return System.AppDomain.CurrentDomain.BaseDirectory + @"[<em>your XML file path</em>]";
+                <br />
+        }
+
+            </code><br />
+            <img src="images/screen11.png"  style="width:600px"/>
+        </li>
+    </ol> 
+                Run your API, and navigate to your Swagger UI documentation. Your XML comments should now be displayed for each endpoint.<br />
+    <img src="images/screen12.png"  style="width:600px"/>
+
+        <h2>Next Steps:</h2>
+
+       <p>For troubleshooting issues and tips on how to integrate additional features, refer to the <a href="https://github.com/domaindrivendev/Swashbuckle" target="_blank">Swashbuckle README</a> on GitHub.com.</p>
+   <p>In addition to <a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a>, SmartBear offers an entire suite of API Delivery and Testing tools. For a complete list of products, visit <a href="https://smartbear.com/" target="_blank">https://smartbear.com/</a>.</p>
+</div>
+</body>
+</html>
